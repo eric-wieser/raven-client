@@ -1,6 +1,4 @@
 #! python2
-from urlparse import urlparse
-
 from bs4 import BeautifulSoup as soup
 import requests
 
@@ -16,7 +14,6 @@ class HTTPAdapter(requests.adapters.HTTPAdapter):
     def send(self, request, **kwargs):
         response = super(HTTPAdapter, self).send(request, **kwargs)
 
-        url = urlparse(response.url)
         if response.url.startswith(auth_url + u'authenticate.html'):
             form = soup(response.text).find('form')
             data = {
