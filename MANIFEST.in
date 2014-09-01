@@ -1,0 +1,3 @@
+include ravenclient.py
+include setup.py
+include README.rst
