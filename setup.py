@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 setup(
   name = 'ravenclient',
   py_modules = ['ravenclient'],
@@ -16,4 +16,6 @@ setup(
     'Programming Language :: Python :: 3.5',
     'Intended Audience :: Developers'
   ],
+  test_suite='nose.collector',
+  tests_require=['nose']
 )

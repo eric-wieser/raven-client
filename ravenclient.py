@@ -6,14 +6,19 @@ import requests
 auth_url = 'https://raven.cam.ac.uk/auth/'
 
 
-class AuthError(IOError):
+class ParseError(RuntimeError):
     """
-    Raised if the library cannot parse the login form. See the .reponse
+    Raised if the library cannot parse the login form. See the .response
     attribute to debug
     """
     def __init__(self, message, response):
         super(AuthError, self).__init__(message, response)
         self.response = response
+
+
+class CredentialError(ValueError):
+    """ Invalid username of password """
+    pass
 
 
 class HTTPAdapter(requests.adapters.HTTPAdapter):
@@ -32,9 +37,9 @@ class HTTPAdapter(requests.adapters.HTTPAdapter):
 
         # look for the login page url
         elif response.url.startswith(auth_url + u'authenticate.html'):
-            form = soup(response.text).find('form')
+            form = soup(response.text, 'lxml').find('form')
             if not form:
-                raise AuthError("Could not parse login form", response)
+                raise ParseError("Could not parse login form", response)
 
             # build the login form param dict
             data = {
@@ -49,6 +54,9 @@ class HTTPAdapter(requests.adapters.HTTPAdapter):
             auth_request = requests.Request('POST', auth_url + 'authenticate2.html', data=data)
             auth_request = auth_request.prepare()
 
-            response = super(HTTPAdapter, self).send(auth_request)
+            response = self.send(auth_request)
+        # look for the login page url
+        elif response.url.startswith(auth_url + u'authenticate2.html'):
+            raise CredentialError("Invalid credentials")
 
         return response
