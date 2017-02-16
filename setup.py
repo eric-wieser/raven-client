@@ -10,5 +10,10 @@ setup(
   url = 'https://github.com/eric-wieser/raven-client',
   download_url = 'https://github.com/eric-wieser/raven-client/tarball/0.6',
   keywords = ['authentication', 'requests', 'raven'],
-  classifiers = [],
+  classifiers = [
+    'License :: OSI Approved :: MIT License',
+    'Programming Language :: Python :: 2.7',
+    'Programming Language :: Python :: 3.5',
+    'Intended Audience :: Developers'
+  ],
 )
